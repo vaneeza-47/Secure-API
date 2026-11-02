@@ -5,6 +5,8 @@
     "express": "^5.3.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
     "nodemon": "^3.1.14"
   },
   "name": "secure-api",

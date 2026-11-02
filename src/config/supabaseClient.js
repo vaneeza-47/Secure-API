@@ -7,6 +7,7 @@ if (!supabaseUrl || !supabaseKey) {
     throw new Error("Missing SUPABASE_URL or SUPABASE_KEY");
 }
 
+/** @type {import('@supabase/supabase-js').SupabaseClient} */
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = supabase;
