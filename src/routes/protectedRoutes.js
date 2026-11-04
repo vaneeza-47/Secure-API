@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+/** @type {import ('@supabase/supabase-js').SupabaseClient} */
+const supabase = require('../config/supabaseClient');
 
-router.get("/profile", (req, res) => {
+router.get("/profile", async (req, res) => {
     const authHeader = req.headers['authorization'];
-    
+
+    // verify authHeader
     if (!authHeader) {
         return res.status(401).json({
             error: "Access token required"
@@ -16,6 +19,7 @@ router.get("/profile", (req, res) => {
         });
     }
 
+    //extract token
     const token = authHeader.split(" ")[1];
     if(!token) {
         return res.status(401).json({
@@ -23,8 +27,15 @@ router.get("/profile", (req, res) => {
         });
     }
 
+     // verify token
+    const {data, error} = await supabase.auth.getUser(token);
+    if (error) return res.status(401).json({
+        error: "Invalid or expired token"
+    });
+
+    // return user details
     return res.status(200).json({
-        message: "Token received - not yet verified"
+        user: data.user
     });
 });
 
