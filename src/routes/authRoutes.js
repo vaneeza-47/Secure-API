@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 /** @type {import('@supabase/supabase-js').SupabaseClient} */
 const supabase = require('../config/supabaseClient');
+const verifyToken = require('../middleware/authMiddleware');
 
 //signup handler
 router.post('/signup', async (req, res) => {
@@ -43,6 +44,18 @@ router.post('/login', async (req, res) => {
         refresh_token: data.session.refresh_token
     });
     
+});
+
+// logout handler
+router.post('/logout', verifyToken, async (req, res) => {
+    const {data, error} = await supabase.auth.signOut();
+    if (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+    
+    return res.status(204).send()
 });
 
 module.exports = router;
