@@ -5,7 +5,11 @@ const verifyToken = require('../middleware/authMiddleware.js')
 router.get("/profile",verifyToken ,async (req, res) => {
     // return user details
     return res.status(200).json({
-        user: req.user
+        user: {
+            id: req.user.id,
+            email: req.user.email,
+            created_at: req.user.created_at
+        }
     });
 });
 
